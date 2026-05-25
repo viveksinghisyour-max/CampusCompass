@@ -22,32 +22,13 @@ interface AuthStore {
   saveComparison: (name: string, collegeIds: string[]) => void;
   deleteComparison: (comparisonId: string) => void;
 }
-
-const DEFAULT_MOCK_USER: User = {
-  id: 'usr-101',
-  email: 'student@campuscompass.in',
-  name: 'Aravind Swamy',
-  savedColleges: ['iit-bangalore', 'bits-hyderabad'],
-  savedComparisons: [
-    {
-      id: 'comp-1',
-      name: 'Top Engineering B.Tech',
-      collegeIds: ['iit-bangalore', 'bits-hyderabad'],
-      createdAt: '2026-05-24T12:00:00.000Z'
-    }
-  ],
-  recentlyViewed: ['iim-ahmedabad', 'delhi-school-of-management']
-};
-
 export const useAuthStore = create<AuthStore>((set, get) => {
   // Safe localStorage getter
   const getStoredUser = (): User | null => {
     if (typeof window === 'undefined') return null;
     const stored = localStorage.getItem('cc_user');
     if (!stored) {
-      // Initialize with default mock user on first load
-      localStorage.setItem('cc_user', JSON.stringify(DEFAULT_MOCK_USER));
-      return DEFAULT_MOCK_USER;
+      return null;
     }
     try {
       return JSON.parse(stored);
